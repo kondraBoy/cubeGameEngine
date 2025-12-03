@@ -1,0 +1,40 @@
+import { SceneManager } from './sceneManager.js';
+import { InputManager } from './inputManager.js';
+import { UIManager } from './uiManager.js';
+
+export class GameEngine { //game engine v.1.0
+    
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.engine = new BABYLON.Engine(canvas, true);
+        this.input = new InputManager(canvas);
+        this.ui = new UIManager();
+        this.sceneManager = new SceneManager(this.engine, this);
+        this.scene = null;
+        this.lastTime = performance.now();
+    }
+
+    start() {
+        this.scene = this.sceneManager.createScene();
+        // Loop di gioco
+        this.engine.runRenderLoop(() => {
+            const now = performance.now();
+            const delta = (now - this.lastTime) / 1000; // in secondi
+            this.lastTime = now;
+            this.update(delta);
+            this.scene.render();
+        });
+
+        window.addEventListener("resize", () => {
+            this.engine.resize();
+        });
+    }
+
+    update(delta) {
+        
+    }
+    
+
+
+
+}

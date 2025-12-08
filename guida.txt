@@ -1,0 +1,41 @@
+Guida progetto cubeGameEngine (Babylon.js)
+==========================================
+
+Cos'è e cosa rappresenta
+- Piccolo prototipo 3D stile parkour: un cubo controllabile deve attraversare una serie di piattaforme in salita fino al traguardo, con respawn sulla piattaforma di start.
+- Mostra gestione di input tastiera, camera orbitale, piattaforme generate proceduralmente e logica di collisione/respawn manuale (senza fisica avanzata).
+
+Tecnologie utilizzate
+- Babylon.js (cdn): rendering 3D, camera, mesh, materiali.
+- JavaScript ES modules: struttura semplice a classi (SceneManager, PlayerController, InputManager, GameEngine).
+- HTML5 canvas: surface di rendering.
+
+Struttura dei file principali (src/)
+- core/gameEngine.js: inizializza engine Babylon, input, UI stub, scene manager; avvia loop di gioco.
+- core/sceneManager.js: crea scena, luce, camera orbitale, player, piattaforme (in salita), piattaforma di spawn dedicata, traguardo; memorizza platform metadata.
+- core/playerController.js: legge input (WASD + spazio), applica movimento e salto, gravità, collisione con piattaforme, respawn se cade o manca appoggio, ritorno allo spawn quando raggiunge il traguardo.
+- core/inputManager.js: gestione tasti premuti.
+- main.js: boot dell’app su DOMContentLoaded.
+- index.html: include Babylon dal CDN e monta il canvas.
+
+Come eseguire
+- Apri `index.html` in un browser moderno (supporto ES modules). Su file:// potrebbe servire un piccolo server statico; esempi:
+  - `npx serve .` oppure `python -m http.server 8000` e visita http://localhost:8000
+- Non servono build o dipendenze locali: tutto è via CDN.
+
+Comandi di gioco
+- Movimento: W A S D
+- Salto: barra spaziatrice
+- Camera: tasto destro del mouse per ruotare attorno al player (ArcRotateCamera); rotellina per zoom
+
+Meccaniche chiave
+- Piattaforme: create proceduralmente davanti al player, distanza leggermente aumentata, salita progressiva, tutta la superficie è calpestabile (bordi inclusi con piccolo epsilon).
+- Spawn dedicato: piattaforma di start più ampia, punto di respawn centrato e usato in ogni situazione di caduta.
+- Collisione: calcolo manuale dell’altezza massima tra le piattaforme sotto il player; contatto solo se il cubo ha piattaforma sotto i piedi.
+- Respawn: scatta se il player non ha una piattaforma sotto ed è sotto il livello della piattaforma di spawn (o sotto -10), oppure al raggiungimento del traguardo.
+
+Possibili estensioni future
+- Aggiungere fisica/rigid body (Cannon.js) per rimbalzi e urti più realistici.
+- Particelle o feedback visivo al traguardo e al respawn.
+- Varietà di piattaforme (mobili, che cadono, ecc.) e timer/score.
+

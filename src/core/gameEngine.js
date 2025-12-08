@@ -18,7 +18,11 @@ export class GameEngine { //game engine v.1.0
 
     start() {
         this.scene = this.sceneManager.createScene();
-        const playerController = new PlayerController(this.sceneManager.player,this.input)
+        const playerController = new PlayerController(
+            this.sceneManager.player,
+            this.input,
+            this.sceneManager
+        );
         this.systems.push(playerController);
         // Loop di gioco
         this.engine.runRenderLoop(() => this.loop());
